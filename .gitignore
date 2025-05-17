@@ -2,7 +2,6 @@
 *.cache
 /Lab1/BusinessObjects/bin
 /Lab1/BusinessObjects/obj
-*.cache
 /Lab1/DataAccessLayer/bin
 /Lab1/DataAccessLayer/obj
 /Lab1/Repositories/bin
