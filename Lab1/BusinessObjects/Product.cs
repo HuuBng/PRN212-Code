@@ -13,6 +13,8 @@ namespace BusinessObjects
             this.UnitsInStock = unitInStock;
             this.UnitPrice = price;
         }
+
+        public Product() { }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public int? CategoryId { get; set; }
