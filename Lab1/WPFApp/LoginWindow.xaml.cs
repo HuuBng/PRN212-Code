@@ -2,7 +2,7 @@
 using Services;
 using System.Windows;
 
-namespace WPFApp
+namespace ProductMangement
 {
     /// <summary> Interaction logic for LoginWindow.xaml
     public partial class LoginWindow : Window
@@ -18,6 +18,7 @@ namespace WPFApp
             AccountMember account = iAccountService.GetAccountById(txtUser.Text);
             if (account != null && account.MemberPassword.Equals(txtPass.Password) && account.MemberRole == 1)
             {
+                MessageBox.Show("Logged in");
                 this.Hide();
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
