@@ -25,24 +25,29 @@ namespace DataAccessLayer
             // liststProducts = new List<Product> { chai, chang, aniseed, chef, chefMix, grandma, uncle, northwoods, mishi, ikura }
         }
 
+        //public List<Product> GetProducts()
+        //{
+        //    var listProducts = new List<Product>();
+        //    try
+        //    {
+        //        using var db = new MyStoreContext();
+        //        listProducts = db.Products.ToList();
+        //    }
+        //    catch (Exception e) { }
+        //    return listProducts;
+        //}
+
         public static List<Product> GetProducts()
-        {
-            var listProducts = new List<Product>();
-            try
-            {
-                using var db = new MyStoreContext();
-                listProducts = db.Products.ToList();
-            }
-            catch (Exception e) { }
-            return listProducts;
+        { 
+            return listProducts; 
         }
 
-        public void SaveProduct(Product p)
+        public static void SaveProduct(Product p)
         {
             listProducts.Add(p);
         }
 
-        public void UpdateProduct(Product product)
+        public static void UpdateProduct(Product product)
         {
             foreach (Product p in listProducts.ToList())
             {
@@ -57,7 +62,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void DeleteProduct(Product product)
+        public static void DeleteProduct(Product product)
         {
             foreach (Product p in listProducts.ToList())
             {
@@ -68,7 +73,7 @@ namespace DataAccessLayer
             }
         }
 
-        public Product GetProductById(int id)
+        public static Product GetProductById(int id)
         {
             foreach (Product p in listProducts.ToList())
             {
