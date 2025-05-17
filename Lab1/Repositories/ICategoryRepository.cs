@@ -3,7 +3,7 @@ using BusinessObjects;
 
 namespace Repositories
 {
-    public interface ICatergoryRepository
+    public interface ICategoryRepository
     {
         List<Category> GetCategories();
     }
