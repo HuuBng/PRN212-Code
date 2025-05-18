@@ -14,14 +14,10 @@ namespace ProductMangement
 
         public MainWindow()
         {
-            //MessageBox.Show("Initializing");
             InitializeComponent();
             try
             {
-                //MessageBox.Show("Create ProductService");
                 iProductService = new ProductService();
-
-                //MessageBox.Show("Create CategoryService");
                 iCategoryService = new CategoryService();
             }
             catch (Exception ex)
@@ -33,7 +29,6 @@ namespace ProductMangement
 
         public void LoadCategoryList()
         {
-            //MessageBox.Show("Load catList");
             try
             {
                 var catList = iCategoryService.GetCategories();
@@ -54,14 +49,38 @@ namespace ProductMangement
 
         public void LoadProductList()
         {
-            //MessageBox.Show("Load proList");
             try
             {
+                var catList = iCategoryService.GetCategories();
+                if (catList == null)
+                {
+                    MessageBox.Show("Category list is null.", "Error");
+                    return;
+                }
+
                 var productList = iProductService.GetProducts();
                 if (productList == null)
                 {
                     MessageBox.Show("Product list is null.", "Error");
                     return;
+                }
+
+                foreach (var item in productList)
+                {
+                    var catName = catList.Find(c => c.CategoryId == item.CategoryId);
+                    if (catName != null)
+                    {
+                        if (item.Category == null)
+                        {
+                            item.Category = new Category();
+                        }
+                        item.Category.CategoryName = catName.CategoryName;
+                        item.Category.CategoryId = catName.CategoryId; // Optional: Keep IDs in sync
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Category with ID {item.CategoryId} not found!");
+                    }
                 }
                 dgData.ItemsSource = productList;
             }
@@ -91,10 +110,10 @@ namespace ProductMangement
                 //product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
                 //product.CategoryId = Int32.Parse(cboCategory.SelectedValue.ToString());
                 //iProductService.SaveProduct(product);
-                if (string.IsNullOrWhiteSpace(txtProductName.Text) || 
-                    !decimal.TryParse(txtPrice.Text, out decimal unitPrice) || 
-                    !short.TryParse(txtUnitsInStock.Text, out short unitsInStock) || 
-                    cboCategory.SelectedValue == null || 
+                if (string.IsNullOrWhiteSpace(txtProductName.Text) ||
+                    !decimal.TryParse(txtPrice.Text, out decimal unitPrice) ||
+                    !short.TryParse(txtUnitsInStock.Text, out short unitsInStock) ||
+                    cboCategory.SelectedValue == null ||
                     !int.TryParse(cboCategory.SelectedValue.ToString(), out int categoryId))
                 {
                     MessageBox.Show("Please fill in all fields with valid data.", "Input Error");

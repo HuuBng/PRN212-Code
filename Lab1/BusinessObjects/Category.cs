@@ -19,5 +19,9 @@ namespace BusinessObjects
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public override string ToString()
+        {
+            return CategoryName ?? "Unknown"; 
+        }
     }
 }
