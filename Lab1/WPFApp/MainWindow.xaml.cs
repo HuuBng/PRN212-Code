@@ -67,15 +67,13 @@ namespace ProductMangement
 
                 foreach (var item in productList)
                 {
-                    var catName = catList.Find(c => c.CategoryId == item.CategoryId);
-                    if (catName != null)
+                    var cat = catList.Find(c => c.CategoryId == item.CategoryId);
+                    if (cat != null)
                     {
                         if (item.Category == null)
-                        {
                             item.Category = new Category();
-                        }
-                        item.Category.CategoryName = catName.CategoryName;
-                        item.Category.CategoryId = catName.CategoryId; // Optional: Keep IDs in sync
+
+                        item.Category = cat;
                     }
                     else
                     {
@@ -189,6 +187,7 @@ namespace ProductMangement
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            App.Current.Shutdown();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
