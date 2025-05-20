@@ -30,13 +30,16 @@ public partial class MyStoreContext : DbContext
     {
         IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true).Build();
-        return configuration["ConnectionStrings:DefaultConnectionString"];
+                .AddJsonFile("appsettings.json").Build();
+        return configuration["ConnectionStrings:MyStockDB"];
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(GetConnectionString());
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(GetConnectionString());
+        }
     }
 
 
