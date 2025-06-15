@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Group4WPF.Views.BookingManagementWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="600" Width="900">
+    <Grid>
+
+        <!-- Phần tạo báo cáo -->
+        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Text="Start Date:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <DatePicker x:Name="StartDatePicker" Margin="0,0,10,0"/>
+            <TextBlock Text="End Date:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <DatePicker x:Name="EndDatePicker" Margin="0,0,10,0"/>
+            <Button Content="Create Report" Click="CreateReport_Click" Width="100"/>
+        </StackPanel>
+
+        <!-- Nút chức năng (Moved to top) -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,0">
+            <Button Content="Add" Click="AddBooking_Click" Margin="5" Width="100"/>
+            <Button Content="Edit" Click="UpdateBooking_Click" Margin="5" Width="100"/>
+            <Button Content="Delete" Click="DeleteBooking_Click" Margin="5" Width="100"/>
+        </StackPanel>
+
+        <!-- Booking chính -->
+        <DataGrid x:Name="BookingDataGrid" AutoGenerateColumns="False" Margin="10,80,10,180"
+                  ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Booking ID" Binding="{Binding BookingID}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Customer ID" Binding="{Binding CustomerID}" />
+                <DataGridTextColumn Header="Room ID" Binding="{Binding RoomID}" />
+                <DataGridTextColumn Header="Check-In" Binding="{Binding CheckInDate, StringFormat=d}" />
+                <DataGridTextColumn Header="Check-Out" Binding="{Binding CheckOutDate, StringFormat=d}" />
+                <DataGridTextColumn Header="Total Price" Binding="{Binding TotalPrice}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- DataGrid báo cáo -->
+        <GroupBox Header="Booking Report" Margin="10,430,10,10">
+            <DataGrid x:Name="ReportDataGrid" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Booking ID" Binding="{Binding BookingID}" />
+                    <DataGridTextColumn Header="Customer ID" Binding="{Binding CustomerID}" />
+                    <DataGridTextColumn Header="Room ID" Binding="{Binding RoomID}" />
+                    <DataGridTextColumn Header="Check-In" Binding="{Binding CheckInDate, StringFormat=d}" />
+                    <DataGridTextColumn Header="Check-Out" Binding="{Binding CheckOutDate, StringFormat=d}" />
+                    <DataGridTextColumn Header="Total Price" Binding="{Binding TotalPrice}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+    </Grid>
+</UserControl>
