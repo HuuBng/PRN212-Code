@@ -1,0 +1,177 @@
+﻿<Window x:Class="Group4WPF.Dialogs.RoomTypeManagementDialog"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:viewmodels="clr-namespace:Group4WPF.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:RoomTypeManagementDialogViewModel}"
+            mc:Ignorable="d"
+            Title="Manage Room Types" Height="500" Width="600"
+            WindowStartupLocation="CenterScreen"
+            ResizeMode="NoResize"
+            ShowInTaskbar="False">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Add/Edit Form -->
+            <RowDefinition Height="Auto"/>
+            <!-- Buttons -->
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Room Type Management" FontSize="20" FontWeight="Bold" Margin="0 0 0 15" HorizontalAlignment="Center"/>
+
+        <!-- DataGrid for Room Types -->
+        <DataGrid Grid.Row="1"
+                      ItemsSource="{Binding RoomTypes}"
+                      SelectedItem="{Binding SelectedRoomType}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      AlternatingRowBackground="#F0F0F0"
+                      RowBackground="White"
+                      BorderBrush="#DDDDDD"
+                      BorderThickness="1"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      Margin="0 0 0 20">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#3498DB"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Padding" Value="8 5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                    <Setter Property="BorderBrush" Value="#2980B9"/>
+                </Style>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="5 0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#A8DFF9"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding RoomTypeID}" Width="Auto" MinWidth="40"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding RoomTypeName}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding TypeDescription}" Width="2*"/>
+                <DataGridTextColumn Header="Note" Binding="{Binding TypeNote}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Add/Edit Form -->
+        <StackPanel Grid.Row="2" Margin="0 0 0 15">
+            <TextBlock Text="Room Type Details" FontSize="16" FontWeight="SemiBold" Margin="0 0 0 10"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- ID -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Name Label -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Name TextBox -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Name Error -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Description Label -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Description TextBox -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Description Error (NEW) -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Note Label -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Note TextBox -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- (No Note Error needed, handled by default) -->
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="ID:" Grid.Row="0" Grid.Column="0" Margin="0 5 10 5" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding EditedRoomType.RoomTypeID, Mode=OneWay}" IsReadOnly="True" Grid.Row="0" Grid.Column="1" Margin="0 5"
+                             Padding="5" BorderBrush="#CCCCCC" BorderThickness="1"/>
+
+                <TextBlock Text="Name:" Grid.Row="1" Grid.Column="0" Margin="0 5 10 5" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding EditedRoomType.RoomTypeName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="0 5"
+                             Padding="5" BorderBrush="#CCCCCC" BorderThickness="1"/>
+                <TextBlock Text="{Binding RoomTypeNameError}" Foreground="Red" Grid.Row="2" Grid.Column="1" Margin="0 -3 0 5" FontSize="11"/>
+
+                <TextBlock Text="Description:" Grid.Row="4" Grid.Column="0" Margin="0 5 10 5" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding EditedRoomType.TypeDescription, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" Margin="0 5"
+                             Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" Height="40" TextWrapping="Wrap"/>
+                <!-- NEW: TextBlock for TypeDescription Error -->
+                <TextBlock Text="{Binding TypeDescriptionError}" Foreground="Red" Grid.Row="5" Grid.Column="1" Margin="0 -3 0 5" FontSize="11"/>
+
+                <TextBlock Text="Note:" Grid.Row="7" Grid.Column="0" Margin="0 5 10 5" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding EditedRoomType.TypeNote, UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="1" Margin="0 5"
+                             Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" Height="40" TextWrapping="Wrap"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- Action Buttons for Room Types -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="New" Command="{Binding NewRoomTypeCommand}" Style="{StaticResource ActionButtonStyle}" Margin="0 0 10 0" Width="43"/>
+            <Button Content="Save" Command="{Binding SaveRoomTypeCommand}" CommandParameter="Save" Style="{StaticResource ActionButtonStyle}" Margin="0 0 10 0" Width="38"/>
+            <Button Content="Delete" Command="{Binding DeleteRoomTypeCommand}" CommandParameter="Delete" Style="{StaticResource DangerButtonStyle}" Margin="0 0 10 0" Width="58"/>
+            <Button Content="Close" IsCancel="True" Style="{StaticResource ActionButtonStyle}" Width="43"/>
+        </StackPanel>
+    </Grid>
+    <Window.Resources>
+        <!-- Styles for Action and Danger Buttons (re-using from AdminMainWindow.xaml or a merged resource dictionary) -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#3498DB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8 5"/>
+            <!-- **** REMOVED THIS LINE TO FIX XLS0431: <Setter Property="CornerRadius" Value="5"/> **** -->
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2980B9"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#21618C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A93226"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+</Window>

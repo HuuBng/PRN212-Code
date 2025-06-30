@@ -1,0 +1,208 @@
+﻿<Window x:Class="Group4WPF.Dialogs.BookingDetailDialog"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:viewmodels="clr-namespace:Group4WPF.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:BookingDetailDialogViewModel}"
+            mc:Ignorable="d"
+            Title="{Binding WindowTitle}" Height="700" Width="800"
+            WindowStartupLocation="CenterScreen"
+            ResizeMode="NoResize"
+            ShowInTaskbar="False">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Main Booking Info -->
+            <RowDefinition Height="Auto"/>
+            <!-- Booking Details Header -->
+            <RowDefinition Height="*"/>
+            <!-- Booking Details DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- NEW: Add Room Button Row -->
+            <RowDefinition Height="Auto"/>
+            <!-- Total Price & Status -->
+            <RowDefinition Height="Auto"/>
+            <!-- Action Buttons -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Main Booking Information -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0 0 0 20">
+            <Grid Margin="0 0 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Booking ID:" Grid.Row="0" Grid.Column="0" Margin="0 5 10 5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding BookingReservation.BookingReservationID, Mode=OneWay}" IsReadOnly="True" Grid.Row="0" Grid.Column="1" Margin="0 5" Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" />
+
+                <TextBlock Text="Booking Date:" Grid.Row="0" Grid.Column="2" Margin="20 5 10 5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding BookingReservation.BookingDate, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="3" Margin="0 5" Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" IsEnabled="{Binding IsAdmin}"/>
+
+                <TextBlock Text="Customer:" Grid.Row="1" Grid.Column="0" Margin="0 5 10 5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Customers}" DisplayMemberPath="CustomerFullName"
+                                  SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" Margin="0 5" Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" />
+                <TextBlock Text="{Binding CustomerError}" Foreground="Red" Grid.Row="2" Grid.Column="1" Margin="0 -3 0 5" FontSize="11"/>
+
+                <TextBlock Text="Booking Status:" Grid.Row="1" Grid.Column="2" Margin="20 5 10 5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding BookingStatuses}"
+                                  SelectedItem="{Binding SelectedBookingStatus, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0 5" Padding="5" BorderBrush="#CCCCCC" BorderThickness="1" />
+            </Grid>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Booking Details (Rooms)" FontSize="18" FontWeight="Bold" Margin="0 0 0 10"/>
+
+        <!-- Booking Details DataGrid -->
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="2"
+                      ItemsSource="{Binding BookingDetails}"
+                      SelectedItem="{Binding SelectedBookingDetail}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      AlternatingRowBackground="#F0F0F0"
+                      RowBackground="White"
+                      BorderBrush="#DDDDDD"
+                      BorderThickness="1"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      Margin="0 0 0 10">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#3498DB"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Padding" Value="8 5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                    <Setter Property="BorderBrush" Value="#2980B9"/>
+                </Style>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="5 0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#A8DFF9"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Room Number" Binding="{Binding RoomInformation.RoomNumber}" Width="*"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding RoomInformation.RoomType.RoomTypeName}" Width="*"/>
+                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat='{}{0:yyyy-MM-dd}'}" Width="Auto"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat='{}{0:yyyy-MM-dd}'}" Width="Auto"/>
+                <DataGridTextColumn Header="Actual Price" Binding="{Binding ActualPrice, StringFormat='C2'}" Width="Auto"/>
+                <DataGridTemplateColumn Header="Actions" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Remove" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RemoveBookingDetailCommand}"
+                                            CommandParameter="{Binding}" Style="{StaticResource DangerButtonStyleMini}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Add Room Button - NOW IN ITS OWN ROW -->
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="Add Room to Booking" Command="{Binding AddRoomToBookingCommand}"
+                            Style="{StaticResource ActionButtonStyle}" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+
+        <!-- Total Price -->
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 20">
+            <TextBlock Text="Total Price:" FontSize="20" FontWeight="Bold" Margin="0 0 10 0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding BookingReservation.TotalPrice, StringFormat='C2'}" FontSize="20" FontWeight="Bold" Foreground="#27AE60" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TextBlock Text="{Binding BookingDetailsError}" Foreground="Red" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 5" FontSize="12"/>
+
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource ActionButtonStyle}" Margin="0 0 10 0"/>
+            <Button Content="Cancel" IsCancel="True" Style="{StaticResource DangerButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+
+    <Window.Resources>
+        <!-- Styles for Action and Danger Buttons -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#3498DB"/>
+            <!-- Blue -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8 5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2980B9"/>
+                    <!-- Darker Blue on hover -->
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#21618C"/>
+                    <!-- Even Darker Blue on press -->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <!-- Red -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                    <!-- Darker Red on hover -->
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A93226"/>
+                    <!-- Even Darker Red on press -->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButtonStyleMini" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <!-- Red -->
+            <Setter Property="Padding" Value="3 0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                    <!-- Darker Red on hover -->
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A93226"/>
+                    <!-- Even Darker Red on press -->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+</Window>
