@@ -1,0 +1,94 @@
+﻿<Window x:Class="ResearchProjectManagement_NoXXXXX.ResearchProjectManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ResearchProjectManagement_NoXXXXX"
+        mc:Ignorable="d"
+        Title="Research Project Management" Height="500" Width="800"
+        FontFamily="Tahoma" FontSize="13"
+        Background="#FFF5F5DC"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Research Project Management"
+               FontFamily="Arial"
+               FontSize="16"
+               Foreground="#FF6B705C"
+               HorizontalAlignment="Center"
+               Margin="0,5,0,5"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5">
+            <TextBox x:Name="txtSearch" Width="200" Height="14" Background="#FFFFF8EB"/>
+            <Button x:Name="BtnSearch" Content="Search" Width="80" Margin="5" Padding="5"
+                    Background="#FFB38B82" Foreground="White"
+                    Click="BtnSearch_Click"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" x:Name="dgProjects"
+                  AutoGenerateColumns="False"
+                  Background="#FFFFF8EB"
+                  SelectionMode="Single"
+                  Margin="0,10,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Project ID" Binding="{Binding ProjectID}" Width="*" />
+                <DataGridTextColumn Header="Title" Binding="{Binding ProjectTitle}" Width="2*" />
+                <DataGridTextColumn Header="Field" Binding="{Binding ResearchField}" Width="*" />
+                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate}" Width="*" />
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}" Width="*" />
+                <DataGridTextColumn Header="Lead Researcher" Binding="{Binding LeadResearcher.FullName}" Width="2*" />
+                <DataGridTextColumn Header="Budget" Binding="{Binding Budget}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,5,0,0">
+            <!-- ProjectTitle & ResearchField -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Project Title:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100"/>
+                <TextBox x:Name="txtProjectTitle" Width="200" Height="14" Background="#FFFFF8EB"/>
+
+                <Label Content="Research Field:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100" Margin="10,0,0,0"/>
+                <TextBox x:Name="txtResearchField" Width="200" Height="14" Background="#FFFFF8EB"/>
+            </StackPanel>
+
+            <!-- StartDate & EndDate -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Start Date:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100"/>
+                <DatePicker x:Name="dpStartDate" Width="200"/>
+
+                <Label Content="End Date:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100" Margin="10,0,0,0"/>
+                <DatePicker x:Name="dpEndDate" Width="200"/>
+            </StackPanel>
+
+            <!-- LeadResearcher & Budget -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Lead Researcher:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100"/>
+                <ComboBox x:Name="cbLeadResearcher" Width="200" Height="20" Background="#FFFFF8EB"
+                          DisplayMemberPath="FullName" SelectedValuePath="ResearcherID"/>
+
+                <Label Content="Budget:" FontFamily="Arial" FontSize="12" Foreground="#FF6B705C" Width="100" Margin="10,0,0,0"/>
+                <TextBox x:Name="txtBudget" Width="200" Height="14" Background="#FFFFF8EB"/>
+            </StackPanel>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                <Button x:Name="BtnCreate" Content="Create" Width="80" Margin="5" Padding="5"
+                        Background="#FFB38B82" Foreground="White"
+                        Click="BtnCreate_Click"/>
+                <Button x:Name="BtnUpdate" Content="Update" Width="80" Margin="5" Padding="5"
+                        Background="#FFB38B82" Foreground="White"
+                        Click="BtnUpdate_Click"/>
+                <Button x:Name="BtnDelete" Content="Delete" Width="80" Margin="5" Padding="5"
+                        Background="#FFB38B82" Foreground="White"
+                        Click="BtnDelete_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>
